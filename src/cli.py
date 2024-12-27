@@ -70,16 +70,6 @@ def main_function():
             expense.Add()
             print(f"Expense added to the database")
         elif args.exp_command == "list":
-            """
-            if args.thismonth == 1:
-                current_date = date.today()
-                first_day_of_month = current_date.replace(day=1)
-                from_date = first_day_of_month.strftime("%Y-%m-%d")
-                lExp = list_date_interval_expenses(from_date, current_date.strftime("%Y-m-%d"))
-                for exp in lExp:
-                    print(exp.to_string())
-            else:
-                """
             # list all expenses
             tExp = Expense.FetchAll()
             for exp in tExp:
