@@ -4,9 +4,12 @@ from datetime import date
 from src.core import Expense, Income, Category, FormatType
 from src.utils import print_categories_tree, balance_month, balance_year
 
+VERSION = "1.0.1"
 
 parser = argparse.ArgumentParser(description="Expenses manager")
 top_level_subparsers = parser.add_subparsers(dest="item", required=True, help="Available commands")
+# 'version' command
+version_parser = top_level_subparsers.add_parser("version", help="Show version")
 # 'exp' command
 exp_parser = top_level_subparsers.add_parser("exp", help="Manage expense records")
 exp_subparser = exp_parser.add_subparsers(dest="exp_command", required=True, help="Expense(s) manager command")
@@ -58,7 +61,9 @@ balance_year_parser.add_argument("-y", "--year", type=int, default=0, help="Year
 def main_function():
     args = parser.parse_args()
 
-    if args.item == "exp":
+    if args.item == "version":
+        print(f"EXPMAN version {VERSION}")
+    elif args.item == "exp":
         if args.exp_command == "add":
             # add expense
             exp_date = date.today()

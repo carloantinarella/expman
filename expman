@@ -2,7 +2,6 @@
 
 from src.cli import main_function
 
-VERSION = "0.0.1"
 
 if __name__ == "__main__":
     main_function()
