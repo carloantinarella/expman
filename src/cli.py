@@ -2,7 +2,7 @@ import argparse
 from datetime import date
 
 from src.core import Expense, Income, Category, FormatType
-from src.utils import print_categories_tree, balance_month
+from src.utils import print_categories_tree, balance_month, balance_year
 
 
 parser = argparse.ArgumentParser(description="Expenses manager")
@@ -104,4 +104,4 @@ def main_function():
         if args.balance_command == "month":
             balance_month(args.month)
         elif args.balance_command == "year":
-            pass
+            balance_year(args.year)
