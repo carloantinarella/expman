@@ -1,3 +1,6 @@
 db/
 doc/
 src/__pycache__/
+build/
+dist/
+expman.spec
