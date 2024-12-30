@@ -1,1 +1,6 @@
+1.0.2: 
+- added config file
+- added number limit over exp and inc list display
+- added date validation
+
 1.0.1: first beta version
