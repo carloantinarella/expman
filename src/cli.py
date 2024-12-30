@@ -1,7 +1,7 @@
 import argparse
 from datetime import date
 
-from src.core import Expense, Income, Category, FormatType
+from src.core import Expense, Income, Category, FormatType, date_is_valid
 from src.utils import print_categories_tree, balance_month, balance_year
 
 VERSION = "1.0.3"
@@ -69,8 +69,11 @@ def main_function():
             exp_date = date.today()
             if (args.date is not None) and (args.date != ""):
                 exp_date = args.date
-            else:
-                pass
+                if date_is_valid(args.date):
+                    # create date object
+                    exp_date = date.fromisoformat(args.date)
+                else:
+                    raise ValueError(f"Invalid date format for: {args.date}")
             expense = Expense(args.category, exp_date, args.amount, args.title, args.notes)
             #expense.Create()
             expense.Add()
