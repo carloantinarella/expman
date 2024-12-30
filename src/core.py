@@ -4,7 +4,7 @@ import sqlite3
 from datetime import date
 from typing import List, Tuple
 from enum import Enum
-
+import re
 
 DB_FOLDER = "db"
 DB_NAME = "expman_db.db"
@@ -53,6 +53,11 @@ COLUMN_ATTRIBUTES_INCOME_DATE = "TEXT NOT NULL"
 COLUMN_ATTRIBUTES_INCOME_AMOUNT = "REAL NOT NULL"
 COLUMN_ATTRIBUTES_INCOME_TITLE = "TEXT"
 COLUMN_ATTRIBUTES_INCOME_NOTES = "TEXT"
+
+date_pattern = re.compile(r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")
+
+def date_is_valid(date_string:str):
+    return bool(date_pattern.match(date_string))
 
 
 class FormatType(Enum):
@@ -394,6 +399,8 @@ class Expense(TransactionItem):
         self.add_dict_element(COLUMN_NAME_EXPENSE_AMOUNT,   str(self.amount))
         self.add_dict_element(COLUMN_NAME_EXPENSE_TITLE,    self.title)
         self.add_dict_element(COLUMN_NAME_EXPENSE_NOTES,    self.notes)
+        if not date_is_valid(self.date):
+            raise ValueError(f"Invalid date format: {self.date}")
         db = DB()
         db.Create(Expense.table_name, self._query_dict.keys(), self._query_dict.values())
     
@@ -435,6 +442,8 @@ class Income(TransactionItem):
         self.add_dict_element(COLUMN_NAME_INCOME_AMOUNT,   str(self.amount))
         self.add_dict_element(COLUMN_NAME_INCOME_TITLE,    self.title)
         self.add_dict_element(COLUMN_NAME_INCOME_NOTES,    self.notes)
+        if not date_is_valid(self.date):
+            raise ValueError(f"Invalid date format: {self.date}")
         db = DB()
         db.Create(Income.table_name, self._query_dict.keys(), self._query_dict.values())
     
