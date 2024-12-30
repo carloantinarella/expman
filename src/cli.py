@@ -4,7 +4,7 @@ from datetime import date
 from src.core import Expense, Income, Category, FormatType, date_is_valid
 from src.utils import print_categories_tree, balance_month, balance_year
 
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 
 parser = argparse.ArgumentParser(description="Expenses manager")
 top_level_subparsers = parser.add_subparsers(dest="item", required=True, help="Available commands")
