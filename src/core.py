@@ -54,11 +54,16 @@ COLUMN_ATTRIBUTES_INCOME_AMOUNT = "REAL NOT NULL"
 COLUMN_ATTRIBUTES_INCOME_TITLE = "TEXT"
 COLUMN_ATTRIBUTES_INCOME_NOTES = "TEXT"
 
+def init_core_module(db_path:str, db_name:str):
+    global DB_FOLDER 
+    global DB_NAME 
+    DB_FOLDER = db_path
+    DB_NAME = db_name
+
 date_pattern = re.compile(r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")
 
 def date_is_valid(date_string:str):
     return bool(date_pattern.match(date_string))
-
 
 class FormatType(Enum):
     LIST = 1
