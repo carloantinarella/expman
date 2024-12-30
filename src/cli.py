@@ -75,8 +75,8 @@ def main_function():
             expense.Add()
             print(f"Expense added to the database")
         elif args.exp_command == "list":
-            # list all expenses
-            tExp = Expense.FetchAll()
+            # list expenses
+            tExp = Expense.FetchNumber(abs(args.number))
             for exp in tExp:
                 print(exp.to_string())
     elif args.item == "inc":
@@ -92,7 +92,7 @@ def main_function():
             print(f"Income added to the database")
         elif args.inc_command == "list":
             # list all incomes
-            tInc = Income.FetchAll()
+            tInc = Income.FetchNumber(abs(args.number))
             for inc in tInc:
                 print(inc.to_string())
     elif args.item == "cat":

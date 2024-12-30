@@ -256,6 +256,35 @@ class DB:
 
         finally:
             pass
+    
+    def FetchNumber(self, table_name:str, number:int) -> List[dict]:
+        """Return a specific number of items, ordered by ID descending"""
+        try:
+            self._connect()
+            columns_tuple = self.getColumnsAsStrings(table_name)
+            serialized_columns = ", ".join(columns_tuple)
+            query = f"SELECT {serialized_columns} FROM {table_name} ORDER BY {COLUMN_NAME_ALL_ID} DESC LIMIT {number}"
+            cursor = self._conn.cursor()
+            cursor.execute(query)
+            records = cursor.fetchall()
+            self._close()
+            # transform into a list of dictionaries where each key has the column name
+            records_dicts = []
+            for record_tuple in records:
+                record_dict = dict()
+                i = 0
+                for column in columns_tuple:
+                    record_dict[column] = record_tuple[i]
+                    i += 1
+                records_dicts.append(record_dict)
+            return records_dicts
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return []
+
+        finally:
+            pass
 
 class Item:
     def __init__(self, table:str, id=0):
@@ -391,7 +420,7 @@ class Expense(TransactionItem):
     table_name = TABLE_NAME_EXPENSES
 
     def __init__(self, category_id: int, date: date, amount: float, title: str, notes: str, id=0):
-        super().__init__(TABLE_NAME_EXPENSES, category_id, date, amount, title, notes, id=0)
+        super().__init__(TABLE_NAME_EXPENSES, category_id, date, amount, title, notes, id)
     
     def Add(self):
         self.add_dict_element(COLUMN_NAME_EXPENSE_CATEGORY, str(self.category_id))
@@ -430,11 +459,18 @@ class Expense(TransactionItem):
         expense_dict_list = db.FetchDate(Expense.table_name, date_from, date_to)
         return Expense._from_dict_to_tuple(expense_dict_list)
 
+    @staticmethod
+    def FetchNumber(number:str):
+        """Fetch the most recent expenses. Get at maximum "number" elements"""
+        db = DB()
+        expense_dict_list = db.FetchNumber(Expense.table_name, number)
+        return Expense._from_dict_to_tuple(expense_dict_list)
+
 class Income(TransactionItem):
     table_name = TABLE_NAME_INCOMES
 
     def __init__(self, category_id: int, date: date, amount: float, title: str, notes: str, id=0):
-        super().__init__(TABLE_NAME_INCOMES, category_id, date, amount, title, notes, id=0)
+        super().__init__(TABLE_NAME_INCOMES, category_id, date, amount, title, notes, id)
 
     def Add(self):
         self.add_dict_element(COLUMN_NAME_INCOME_CATEGORY, str(self.category_id))
@@ -471,4 +507,11 @@ class Income(TransactionItem):
         """Fetch all incomes between a date interval"""
         db = DB()
         income_dict_list = db.FetchDate(Income.table_name, date_from, date_to)
+        return Income._from_dict_to_tuple(income_dict_list)
+
+    @staticmethod
+    def FetchNumber(number:str):
+        """Fetch the most recent incomes. Get at maximum "number" elements"""
+        db = DB()
+        income_dict_list = db.FetchNumber(Income.table_name, number)
         return Income._from_dict_to_tuple(income_dict_list)
