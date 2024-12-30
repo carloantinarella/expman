@@ -7,8 +7,18 @@ import os
 import sys
 from pathlib import Path
 
-script_dir = Path(sys.executable).parent
-config_file_path = os.path.join(script_dir, 'expman.conf')
+
+if getattr(sys, 'frozen', False):
+    # The program is running as a compiled executable
+    script_dir = Path(sys.executable).parent
+    config_file_path = os.path.join(script_dir, 'expman.conf')
+else:
+    # The program is running as a standard Python script
+    print("Running as developer")
+    print(f"Script path: {Path(__file__).parent}")
+    script_dir = Path(__file__).parent
+    config_file_path = os.path.join(script_dir, 'expman.conf')
+
 config = configparser.ConfigParser()
 config.read(config_file_path)
 

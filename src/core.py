@@ -433,7 +433,7 @@ class Expense(TransactionItem):
         self.add_dict_element(COLUMN_NAME_EXPENSE_AMOUNT,   str(self.amount))
         self.add_dict_element(COLUMN_NAME_EXPENSE_TITLE,    self.title)
         self.add_dict_element(COLUMN_NAME_EXPENSE_NOTES,    self.notes)
-        if not date_is_valid(self.date):
+        if not date_is_valid(self.date.strftime("%Y-%m-%d")):
             raise ValueError(f"Invalid date format: {self.date}")
         db = DB()
         db.Create(Expense.table_name, self._query_dict.keys(), self._query_dict.values())

@@ -69,7 +69,8 @@ def main_function():
             exp_date = date.today()
             if (args.date is not None) and (args.date != ""):
                 exp_date = args.date
-                # todo: add date validation
+            else:
+                pass
             expense = Expense(args.category, exp_date, args.amount, args.title, args.notes)
             #expense.Create()
             expense.Add()
