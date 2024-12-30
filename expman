@@ -3,9 +3,14 @@
 from src.core import init_core_module
 from src.cli import main_function
 import configparser
+import os
+import sys
+from pathlib import Path
 
+script_dir = Path(sys.executable).parent
+config_file_path = os.path.join(script_dir, 'expman.conf')
 config = configparser.ConfigParser()
-config.read('expman.conf')
+config.read(config_file_path)
 
 if __name__ == "__main__":
     init_core_module(config['database']['path'], config['database']['name'])

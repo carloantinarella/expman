@@ -1,3 +1,6 @@
+1.0.3:
+- fixed path for confi file
+
 1.0.2: 
 - added config file
 - added number limit over exp and inc list display
