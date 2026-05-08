@@ -1,10 +1,11 @@
 import argparse
 from datetime import date
+import sys
 
 from src.core import Expense, Income, Category, FormatType, date_is_valid
 from src.utils import print_categories_tree, balance_month, balance_year
 
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 parser = argparse.ArgumentParser(description="Expenses manager")
 top_level_subparsers = parser.add_subparsers(dest="item", required=True, help="Available commands")
@@ -62,7 +63,12 @@ def main_function():
     args = parser.parse_args()
 
     if args.item == "version":
-        print(f"EXPMAN version {VERSION}")
+        if getattr(sys, 'frozen', False):
+            # compoiled version
+            print(f"EXPMAN version {VERSION}")
+        else:
+            # develop version
+            print(f"EXPMAN version {VERSION}dev")
     elif args.item == "exp":
         if args.exp_command == "add":
             # add expense
@@ -89,7 +95,11 @@ def main_function():
             inc_date = date.today()
             if (args.date is not None) and (args.date != ""):
                 inc_date = args.date
-                # todo: add date validation
+                if date_is_valid(args.date):
+                    # create date object
+                    inc_date = date.fromisoformat(args.date)
+                else:
+                    raise ValueError(f"Invalid date format for: {args.date}")
             income = Income(args.category, inc_date, args.amount, args.title, args.notes)
             #income.Create()
             income.Add()

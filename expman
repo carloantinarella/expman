@@ -14,7 +14,6 @@ if getattr(sys, 'frozen', False):
     config_file_path = os.path.join(script_dir, 'expman.conf')
 else:
     # The program is running as a standard Python script
-    print("Running as developer")
     print(f"Script path: {Path(__file__).parent}")
     script_dir = Path(__file__).parent
     config_file_path = os.path.join(script_dir, 'expman.conf')
