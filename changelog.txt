@@ -1,3 +1,6 @@
+1.0.5
+- fixed crash when inc add for date validation error
+
 1.0.4:
 - fixed bug for date format
 
